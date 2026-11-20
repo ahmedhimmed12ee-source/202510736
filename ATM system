@@ -1,0 +1,126 @@
+import java.util.Scanner;
+
+public class Main {
+    public static void main(String[] args) {
+
+        Scanner input = new Scanner(System.in);
+
+        // Authentication
+        int correctPIN = 1234;
+        int attempts = 0;
+        boolean loggedIn = false;
+
+        while (attempts < 3) {
+            System.out.print("Enter your PIN: ");
+            int pin = input.nextInt();
+
+            if (pin == correctPIN) {
+                loggedIn = true;
+                System.out.println("Login successful!");
+                break;
+            } else {
+                attempts++;
+                System.out.println("Incorrect PIN!");
+
+                if (attempts < 3) {
+                    System.out.println("Attempts left: " + (3 - attempts));
+                }
+            }
+        }
+
+        if (!loggedIn) {
+            System.out.println("Your account is locked!");
+        } else {
+
+            // Account balance
+            double balance = 1000;
+
+            // Transaction history
+            String[] transactions = new String[100];
+            int transactionCount = 0;
+
+            int choice;
+
+            // Main Menu
+            do {
+                System.out.println("\n===== ATM MENU =====");
+                System.out.println("1. Check Balance");
+                System.out.println("2. Deposit Money");
+                System.out.println("3. Withdraw Money");
+                System.out.println("4. View Transactions");
+                System.out.println("5. Exit");
+                System.out.print("Enter your choice: ");
+
+                choice = input.nextInt();
+
+                switch (choice) {
+
+                    case 1:
+                        System.out.println("Your balance: " + balance);
+                        break;
+
+                    case 2:
+                        System.out.print("Enter deposit amount: ");
+                        double deposit = input.nextDouble();
+
+                        if (deposit > 0 && transactionCount < 100) {
+                            balance += deposit;
+
+                            transactions[transactionCount] =
+                                "Deposited: " + deposit;
+
+                            transactionCount++;
+
+                            System.out.println("Deposit successful!");
+                        } else {
+                            System.out.println("Invalid amount or history is full!");
+                        }
+                        break;
+
+                    case 3:
+                        System.out.print("Enter withdrawal amount: ");
+                        double withdraw = input.nextDouble();
+
+                        if (withdraw > 0 && withdraw <= balance
+                                && transactionCount < 100) {
+
+                            balance -= withdraw;
+
+                            transactions[transactionCount] =
+                                "Withdrawn: " + withdraw;
+
+                            transactionCount++;
+
+                            System.out.println("Withdrawal successful!");
+
+                        } else {
+                            System.out.println("Insufficient balance or invalid amount!");
+                        }
+                        break;
+
+                    case 4:
+                        System.out.println("\nTransaction History:");
+
+                        if (transactionCount == 0) {
+                            System.out.println("No transactions yet.");
+                        }
+
+                        for (int i = 0; i < transactionCount; i++) {
+                            System.out.println(transactions[i]);
+                        }
+                        break;
+
+                    case 5:
+                        System.out.println("Thank you for using our ATM!");
+                        break;
+
+                    default:
+                        System.out.println("Invalid choice!");
+                }
+
+            } while (choice != 5);
+        }
+
+        input.close();
+    }
+}
